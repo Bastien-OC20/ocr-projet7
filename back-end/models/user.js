@@ -1,24 +1,18 @@
-class User {
-    constructor(
-      id,
-      firstName,
-      lastName,
-      pseudo,
-      email,
-      phone,
-      password,
-      avatar,
-      createdAt
-    ) {
-      this.id = id || null;
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.pseudo = pseudo;
-      this.email = email;
-      this.phone = phone;
-      this.password = password;
-      this.avatar = avatar;
-      this.createdAt = createdAt;
-    }
-  }
-  module.exports = User;
+'use strict';
+
+module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define(
+        'User', {
+            email: DataTypes.STRING,
+            username: DataTypes.STRING,
+            password: DataTypes.STRING,
+            isAdmin: DataTypes.BOOLEAN
+        }, {}
+    );
+
+    User.associate = function (models) {
+        models.User.hasMany(models.Publication);
+    };
+
+    return User;
+};

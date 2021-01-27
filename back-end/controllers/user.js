@@ -1,99 +1,141 @@
-const link = require('../models/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
+
 const fs = require('fs');
 
+const db = require('../models/index.js');
+console.log(Object.keys(db));
+
+
+
+
+// LOGIQUE METIER //
+
+// SIGNUP DES UTILISATEURS //
 exports.signup = (req, res, next) => {
+    const User = db.User;
+
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
-            req.body.password = hash;
-            link.execute('INSERT INTO Users VALUES (NULL, ?, ?, ?, NULL);', [req.body.email, hash, req.body.userName], (err, rows, fiedls) => {
-                if(err) {
-                    return res.status(400).json({ err });
-                };
-                res.status(201).json({ message: "User created successfully." });
+            const user = new User({
+                username: req.body.username,
+                email: req.body.email,
+                password: hash,
+                isAdmin: req.body.isAdmin,
+
             });
+            user.save()
+                .then(() => res.status(201).json({
+                    message: 'Utilisateur crée'
+                }))
+                .catch(error => res.status(500).json({
+                    message: 'Cette adresse mail et\\ou ce nom d\'utilisateur semble être déjà utilisé'
+                }));
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => console.log(error) || res.status(500).json({
+            error: "erreur signup"
+        }));
 };
 
+
+
+// LOGIN DES UTILISATEURS //
 exports.login = (req, res, next) => {
-    link.execute('SELECT * FROM Users WHERE email= ?', [req.body.email], (err, rows, fiedls) => {
-        if(err) {
-            return res.status(401).json({ error: "User not found." });
-        };
-        bcrypt.compare(req.body.password, rows[0].password)
-            .then(valid => {
-                if(!valid) {
-                    return res.status(401).json({ error: "Wrong password." });
-                };
-                res.status(200).json({
-                    userId: rows[0].id,
-                    email: rows[0].email,
-                    token: jwt.sign(
-                        { userId: rows[0].id },
-                        process.env.SECRET_KEY,
-                        { expiresIn: '24h' }
-                    )
-                });
+    const user = db.User;
+    let email = req.body.email;
+    let password = req.body.password;
+
+    if (email == null || password == null) {
+        res.status(400).json({
+            message: 'Il manque un paramètre ! '
+        });
+    }
+    db.User.findOne({
+            where: {
+                email: email
+            }
+        })
+        .then(user => {
+            if (user) {
+                bcrypt.compare(password, user.password, (errBcrypt, resBcrypt) => {
+                    if (resBcrypt) {
+                        res.status(200).json({
+                            userId: user.id,
+                            token: jwt.sign({
+                                userId: user.id
+                            }, process.env.SECRET_KEY, {
+                                expiresIn: "24h",
+                            })
+                        })
+                    } else {
+                        res.status(403).json({
+                            error: 'invalid password ',
+                            password: password,
+                            user: user,
+                            errBcrypt: errBcrypt,
+                            resBcrypt: resBcrypt
+                        });
+                    };
+                })
+            } else {
+                res.status(404).json({
+                    'erreur': 'Cet utilisateur n\'existe pas'
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                err
             })
-            .catch(error => res.status(500).json({ error }));
-    });
+        })
 };
 
-exports.readUser = (req, res, next) => {
-    link.execute('SELECT id, email, userName, profilePhoto FROM Users WHERE id= ?', [req.params.id], (err, rows, fiedls) => {
-        if(err) {
-            return res.status(404).json({ err });
-        };
-        res.status(200).json(rows);
-    });
+
+// DELETE USER //
+exports.deleteUser = async (req, res, next) => {
+    try {
+        await db.User.destroy({
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+        return res.status(200).send({
+            message: "Utilisateur supprimé"
+        })
+    } catch (err) {
+        return res.status(500).json({
+            err
+        });
+    }
+}
+
+// GET ONE USER //
+exports.getOneUser = (req, res, next) => {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const userId = decodedToken.userId;
+    db.User.findOne({
+            where: {
+                id: userId,
+            },
+        })
+        .then((user) => res.status(200).json({
+            user
+        }))
+        .catch((err) => res.status(401).json({
+            err
+        }));
 };
 
-exports.updateUser = (req, res, next) => {
-    const userObject = req.file ?
-    {
-        ...JSON.parse(req.body.user),
-        profilePhoto: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : {
-        userName: req.body.user.userName,
-        profilePhoto: null 
-    };
-    link.execute('SELECT * FROM Users WHERE id= ?;', [req.params.id], (selectErr, selectRows, selectFields) => {
-        if(selectErr) return res.status(400).json({ selectErr });
-        if(req.file = true && selectRows[0].profilePhoto != null) {
-            const filename = selectRows[0].profilePhoto.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-                link.execute('UPDATE Users SET userName= ?, profilePhoto= ? WHERE id= ?;', [userObject.userName, userObject.profilePhoto, req.params.id], (updateErr, updateRows, updateFields) => {
-                    if(updateErr) return res.status(400).json({ updateErr });
-                    res.status(200).json({ message: "User successfully modified. Old profile photo deleted." });
-                });
-            });
-        } else {
-            link.execute('UPDATE Users SET userName= ?, profilePhoto= ? WHERE id= ?;', [userObject.userName, userObject.profilePhoto, req.params.id], (updateErr, updateRows, updateFields) => {
-                if(updateErr) return res.status(400).json({ updateErr });
-                res.status(200).json({ message: "User successfully modified." });
-            });
-        };
-    });
-};
 
-exports.deleteUser = (req, res, next) => {
-    link.execute('SELECT * FROM Users WHERE id= ?;', [req.params.id], (selectErr, selectRows, selectFields) => {
-        if(selectErr) return res.status(400).json({ selectErr });
-        if(selectRows[0].profilePhoto != null) {
-            const filename = selectRows[0].profilePhoto.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-                conn.execute('DELETE FROM Users WHERE id= ?;', [req.params.id], (deleteErr, deleteRows, deleteFields) => {
-                    if(deleteErr) return res.status(400).json({ deleteErr });
-                    res.status(200).json({ message: "User and profile photo successfully deleted." });
-                });
-            });
-        } else {
-            link.execute('DELETE FROM Users WHERE id= ?;', [req.params.id], (deleteErr, deleteRows, deleteFields) => {
-                if(deleteErr) return res.status(400).json({ deleteErr });
-                res.status(200).json({ message: "User successfully deleted." });
-            });
-        };
-    });
+// GET ALL USERS //
+exports.getAllUsers = (req, res, next) => {
+    db.User.findAll()
+        .then((users) => res.status(200).json({
+            users
+        }))
+        .catch((err) => res.status(401).json({
+            err
+        }));
 };

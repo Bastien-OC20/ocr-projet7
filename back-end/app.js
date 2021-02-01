@@ -12,7 +12,7 @@ require('dotenv').config()
 
 
 const userRoutes = require('./routes/user');
-const publicationRoutes = require('./routes/post');
+const publicationRoutes = require('./routes/publication');
 const adminRoutes = require('./routes/admin');
 const path = require('path');
 

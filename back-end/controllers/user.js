@@ -27,20 +27,22 @@ exports.signup = (req, res, next) => {
             });
             user.save()
                 .then(() => res.status(201).json({
-                    message: 'Utilisateur(rice) crée(e)'
+                    message: 'Utilisateur crée'
                 }))
                 .catch(error => res.status(500).json({
-                    message: 'Cette adresse mail et\\ou ce nom d\'utilisateur(rice) semble être déjà utilisé(é)(s)'
+                    message: 'Cette adresse mail et\\ou ce nom d\'utilisateur semble être déjà utilisé'
                 }));
         })
         .catch(error => console.log(error) || res.status(500).json({
-            error: "erreur d'enregistrement"
+            error: "erreur signup"
         }));
 };
 
 
 
 // LOGIN DES UTILISATEURS //
+
+
 exports.login = (req, res, next) => {
     const user = db.User;
     let email = req.body.email;
@@ -93,6 +95,7 @@ exports.login = (req, res, next) => {
 
 
 // DELETE USER //
+
 exports.deleteUser = async (req, res, next) => {
     try {
         await db.User.destroy({
@@ -111,6 +114,7 @@ exports.deleteUser = async (req, res, next) => {
 }
 
 // GET ONE USER //
+
 exports.getOneUser = (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
@@ -130,6 +134,7 @@ exports.getOneUser = (req, res, next) => {
 
 
 // GET ALL USERS //
+
 exports.getAllUsers = (req, res, next) => {
     db.User.findAll()
         .then((users) => res.status(200).json({

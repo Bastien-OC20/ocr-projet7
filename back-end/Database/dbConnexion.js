@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = {}
 const database = require('../models');
-const sequelize = new Sequelize("groupomania", "root", "", {
+const sequelize = new Sequelize("groupomania", "root", null, {
     host: "localhost",
     dialect: "mysql",
     pool: {

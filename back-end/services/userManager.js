@@ -1,7 +1,6 @@
 'use strict';
 
 const Models = require('../models/index.js');
-
 module.exports = class userManager
 {
     /**

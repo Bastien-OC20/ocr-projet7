@@ -1,11 +1,6 @@
-/* récupération du package http de node.js */
 const http = require('http');
-const models = require('./models');
-/* récupération de l'application express */
 const app = require('./app');
-const debug = require('debug')('express-sequelize');
 
-/* la fonction normalizePort renvoie un port valide */
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -17,20 +12,14 @@ const normalizePort = val => {
   }
   return false;
 };
-
-
-
-
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/* fonction errorHandler cherche et gère les erreurs */
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
   }
   const address = server.address();
-
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
   switch (error.code) {
     case 'EACCES':
@@ -46,7 +35,6 @@ const errorHandler = error => {
   }
 };
 
-/* passation de l'app express a la creation du serveur */
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
@@ -56,6 +44,4 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
-
-/* on configure le serveur sur le port 3000 par défaut */
 server.listen(port);

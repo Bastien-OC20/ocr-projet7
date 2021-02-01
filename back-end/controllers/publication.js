@@ -1,29 +1,34 @@
 'use strict';
 
+// Une inclusion pour les gouverner tous
 const models = require('../models/index.js');
 
-
+// Inclusion des services
 const userManager = require('../services/userManager');
-const postManager = require('../services/postManager');
-require('dotenv').config()
+const publicationManager = require('../services/publicationManager');
 
+// On utilise le token pour identifier la personne qui publie le commentaire
 const jwt = require('jsonwebtoken');
 
 exports.createPublication = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
     const userId = decodedToken.userId;
+
+    // Recherche de l'utilisateur courant
     return userManager
         .findOne({
             'id': userId
         })
         .then(user => {
+            // On vérifie le retour de la requête sql
             if (null == user) {
                 return res.status(400).json({
                     'error': 'Utilisateur non trouvé.',
                     'userId': userId
                 })
             }
+
             let data = {
                 'UserId': userId,
                 'title': req.body.title,
@@ -31,7 +36,9 @@ exports.createPublication = (req, res, next) => {
                 'likes': req.body.likes,
                 'attachment': `${req.body.inputFile}`
             };
-            return postManager
+
+            // Création d'une publication
+            return publicationManager
                 .create(data)
                 .then((newPost) => {
                     return res.status(200).json({
@@ -56,14 +63,16 @@ exports.createPublication = (req, res, next) => {
 }
 
 exports.getAllPublication = (req, res, next) => {
-    models.Post.findAll({
+
+    models.Publication.findAll({
+        
             order: sequelize.literal('updatedAt DESC'),
             include: {
                 model: models.User,
                 attributes: ['username']
             }
         })
-        .then(post => res.status(200).json(post))
+        .then(publications => res.status(200).json(publications))
         .catch(error => res.status(400).json({
             error: "gettallpublication",
             error: error
@@ -71,7 +80,8 @@ exports.getAllPublication = (req, res, next) => {
 };
 
 exports.getOnePublication = (req, res, next) => {
-    models.Post.findOne({
+
+    models.Publication.findOne({
             where: {
                 id: req.params.id
             },
@@ -80,8 +90,8 @@ exports.getOnePublication = (req, res, next) => {
                 attributes: ['username']
             }
         })
-        .then(post => {
-            res.status(200).json(post);
+        .then(publication => {
+            res.status(200).json(publication);
         })
         .catch(error => res.status(400).json({
             error
@@ -89,13 +99,17 @@ exports.getOnePublication = (req, res, next) => {
 };
 
 exports.modifyPublication = async (req, res) => {
+
     try {
-        await models.Post.findOne({
+
+
+        await models.Publication.findOne({
             where: {
                 id: (req.params.id)
             }
         });
-        await models.Post.update({
+
+        await models.Publication.update({
             title: req.body.title,
             content: req.body.content,
             attachment: req.body.attachment
@@ -104,6 +118,7 @@ exports.modifyPublication = async (req, res) => {
                 id: (req.params.id)
             }
         });
+
         return res.status(200).send({
             message: "Publication modifiée"
         })
@@ -114,7 +129,7 @@ exports.modifyPublication = async (req, res) => {
 
 exports.deletePublication = async (req, res, next) => {
     try {
-        await models.Post.destroy({
+        await models.Publication.destroy({
             where: {
                 id: (req.params.id)
             }

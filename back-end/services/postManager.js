@@ -2,7 +2,7 @@
 
 const Models = require('../models/index.js');
 
-module.exports = class publicationManager
+module.exports = class postManager
 {
     /**
      * Permet d'ajouter une publication
@@ -13,7 +13,7 @@ module.exports = class publicationManager
         return new Promise(
             (resolve, reject) => {
                 // On insert la publication
-                return Models.Publication
+                return Models.Post
                     .create(data)
                     .then((newPost) => {
                         resolve(newPost);

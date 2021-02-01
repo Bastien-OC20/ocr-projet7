@@ -1,8 +1,9 @@
 /* récupération du package http de node.js */
 const http = require('http');
-
+const models = require('./models');
 /* récupération de l'application express */
 const app = require('./app');
+const debug = require('debug')('express-sequelize');
 
 /* la fonction normalizePort renvoie un port valide */
 const normalizePort = val => {
@@ -16,6 +17,10 @@ const normalizePort = val => {
   }
   return false;
 };
+
+
+
+
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -25,6 +30,7 @@ const errorHandler = error => {
     throw error;
   }
   const address = server.address();
+
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
   switch (error.code) {
     case 'EACCES':

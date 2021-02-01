@@ -1,21 +1,22 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    const Publication = sequelize.define(
-        'Publication', {
+    const Post = sequelize.define(
+        'Post', {
             title: DataTypes.STRING,
-            user: DataTypes.INTEGER,
+            userId: DataTypes.INTEGER,
             content: DataTypes.STRING,
             attachment: DataTypes.STRING,
             likes: DataTypes.INTEGER
         }, {}
     );
 
-    Publication.associate = function (models) {
-        models.Publication.belongsTo(models.User, {
+    Post.associate = function (models) {
+        models.Post.belongsTo(models.User, {
             foreignKey: {
                 allowNull: false
             }
         })
     };
-    return Publication;
+
+    return Post;
 };

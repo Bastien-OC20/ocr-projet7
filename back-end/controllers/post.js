@@ -4,7 +4,7 @@ const models = require('../models/index.js');
 
 
 const userManager = require('../services/userManager');
-const publicationManager = require('../services/publicationManager');
+const postManager = require('../services/postManager');
 require('dotenv').config()
 
 const jwt = require('jsonwebtoken');
@@ -31,7 +31,7 @@ exports.createPublication = (req, res, next) => {
                 'likes': req.body.likes,
                 'attachment': `${req.body.inputFile}`
             };
-            return publicationManager
+            return postManager
                 .create(data)
                 .then((newPost) => {
                     return res.status(200).json({
@@ -56,14 +56,14 @@ exports.createPublication = (req, res, next) => {
 }
 
 exports.getAllPublication = (req, res, next) => {
-    models.Publication.findAll({
+    models.Post.findAll({
             order: sequelize.literal('updatedAt DESC'),
             include: {
                 model: models.User,
                 attributes: ['username']
             }
         })
-        .then(publications => res.status(200).json(publications))
+        .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({
             error: "gettallpublication",
             error: error
@@ -71,7 +71,7 @@ exports.getAllPublication = (req, res, next) => {
 };
 
 exports.getOnePublication = (req, res, next) => {
-    models.Publication.findOne({
+    models.Post.findOne({
             where: {
                 id: req.params.id
             },
@@ -80,8 +80,8 @@ exports.getOnePublication = (req, res, next) => {
                 attributes: ['username']
             }
         })
-        .then(publication => {
-            res.status(200).json(publication);
+        .then(post => {
+            res.status(200).json(post);
         })
         .catch(error => res.status(400).json({
             error
@@ -90,12 +90,12 @@ exports.getOnePublication = (req, res, next) => {
 
 exports.modifyPublication = async (req, res) => {
     try {
-        await models.Publication.findOne({
+        await models.Post.findOne({
             where: {
                 id: (req.params.id)
             }
         });
-        await models.Publication.update({
+        await models.Post.update({
             title: req.body.title,
             content: req.body.content,
             attachment: req.body.attachment
@@ -114,7 +114,7 @@ exports.modifyPublication = async (req, res) => {
 
 exports.deletePublication = async (req, res, next) => {
     try {
-        await models.Publication.destroy({
+        await models.Post.destroy({
             where: {
                 id: (req.params.id)
             }

@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     User.associate = function (models) {
-        models.User.hasMany(models.Publication);
+        // associations can be defined here
+        models.User.hasMany(models.Post);
     };
 
     return User;

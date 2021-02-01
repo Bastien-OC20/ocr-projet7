@@ -27,14 +27,14 @@ exports.signup = (req, res, next) => {
             });
             user.save()
                 .then(() => res.status(201).json({
-                    message: 'Utilisateur crée'
+                    message: 'Utilisateur(rice) crée(e)'
                 }))
                 .catch(error => res.status(500).json({
-                    message: 'Cette adresse mail et\\ou ce nom d\'utilisateur semble être déjà utilisé'
+                    message: 'Cette adresse mail et\\ou ce nom d\'utilisateur(rice) semble être déjà utilisé(é)(s)'
                 }));
         })
         .catch(error => console.log(error) || res.status(500).json({
-            error: "erreur signup"
+            error: "erreur d'enregistrement"
         }));
 };
 

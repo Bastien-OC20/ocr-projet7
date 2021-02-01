@@ -12,12 +12,12 @@ require('dotenv').config()
 
 
 const userRoutes = require('./routes/user');
-const publicationRoutes = require('./routes/publication');
+const publicationRoutes = require('./routes/post');
 const adminRoutes = require('./routes/admin');
 const path = require('path');
 
 //DB connection//
-require("./dbConnexion");
+require("./Database/dbConnexion");
 
 
 app.use(helmet());
@@ -32,7 +32,9 @@ app.use((req, res, next) => {
     next();
 });
 
-
+app.use(
+    bodyParser.urlencoded({ extended : false })
+)
 /* .json - bodyParser transforme le corps de la requête en objet JS*/
 app.use(bodyParser.json());
 
@@ -43,6 +45,5 @@ app.use('/api/auth', userRoutes);
 app.use('/api/publications', publicationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
 
 module.exports = app;

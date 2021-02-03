@@ -1,25 +1,17 @@
-//on récupère un jwt pour vérifier les tokens//
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken")
 
 module.exports = (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(' ')[1];
-
-        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-
-        const userId = decodedToken.userId;
-
+        const token = req.headers.authorization.split(" ")[1]
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+        const userId = decodedToken.userId
         if (req.body.userId && req.body.userId !== userId) {
-            throw 'Invalid user ID';
-
+            throw "Utilisateur non-reconnu !"
         } else {
-            req.userId = userId
-            next();
+            next()
         }
-    } catch (error) {
-
-        res.status(401).json({
-            error: "Unauthorized"
-        });
+    } 
+    catch (error) {
+        res.status(401).json({ error: error || "Requête non authentifiée !" })
     }
-};
+}

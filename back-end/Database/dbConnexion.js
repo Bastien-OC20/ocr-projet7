@@ -1,27 +1,20 @@
-const Sequelize = require('sequelize')
-const db = {}
-const database = require('../models');
-const sequelize = new Sequelize("groupomania", "root", null, {
-    host: "localhost",
-    dialect: "mysql",
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
-})
+const Sequelize = require('sequelize');
+require('dotenv').config()
 
-db.sequelize = sequelize
-db.Sequelize = Sequelize
+const sequelize = new Sequelize(process.env.DB_DATANAME, process.env.DB_USERNAME, null, {
+    host: process.env.DB_HOST,
+    port: 3306,
+    dialect: 'mysql'
+});
 
-database.sequelize
+sequelize
   .authenticate()
   .then(() => {
-    console.log('Bien ! tout me semble bon ');
+    console.log('La connnexion s\'est établie correctement');
   })
   .catch(err => {
     console.error('Impossible de se connecter à la base de données:', err);
   });
 
-module.exports = db
+module.exports = sequelize
+global.sequelize = sequelize;

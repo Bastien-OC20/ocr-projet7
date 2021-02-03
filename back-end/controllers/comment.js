@@ -2,7 +2,7 @@ const db = require("../models")
 const Comment = db.comments
 const User = db.users
 
-// Tous les commentaire d'un message
+// Tous les commentaires d'un message
 exports.findAllComments = (req, res, next) => {
     const CommentsForOneMessage = {}
     Comment.findAll({ 

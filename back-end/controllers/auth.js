@@ -2,6 +2,8 @@ const db = require("../models")
 const User = db.users
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+require('dotenv').config()
+
 
 // Creation d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
@@ -55,7 +57,7 @@ exports.login = (req, res, next) => {
                 role: user.isAdmin,
                 userName : user.userName,
                 avatar : user.avatar,
-                token: jwt.sign( { userId: user.id }, process.env.RND_TKN, { expiresIn: '24h' } )
+                token: jwt.sign( { userId: user.id }, process.env.SECRET_KEY, { expiresIn: '24h' } )
             })
         })
         .catch(error => res.status(501).json({ error }))

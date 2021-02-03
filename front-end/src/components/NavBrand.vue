@@ -1,6 +1,6 @@
 <template>
     <router-link to="/messages">
-        <img src="../assets/logo_orange.svg" alt="logo groupomania" height="37" class="m-0 p-0"/>
+        <img src="../assets/logo_orange.png" alt="logo groupomania" height="37" class="m-0 p-0"/>
     </router-link>
 </template>
 

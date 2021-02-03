@@ -3,10 +3,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allMessages">
-                    <div class="row my-2">
-                        <div class="col-6 pr-1"><a href="#/messages" class="btn btn-sm btn-block btn-success">...retour aux messages</a></div>
-                        <div class="col-6 pl-1"><a href="#/compte" class="btn btn-sm btn-block btn-primary">retour à mon compte...</a></div>
-                    </div>
+                   
                     <div v-for="message in userMessages" :key="message.id" class="card bg-light my-3">
                         <div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
                             <div>
@@ -29,6 +26,10 @@
                         <div class="card-footer bg-light text-dark text-left m-0">
                             <a :href="'#/commentaires/' + message.id" class="h6 small">Voir les commentaires</a>
                         </div>
+                    </div>
+                     <div class="row my-2">
+                        <div class="col-6 pr-1"><a href="#/messages" class="btn btn-sm btn-block btn-success">...retour aux messages</a></div>
+                        <div class="col-6 pl-1"><a href="#/compte" class="btn btn-sm btn-block btn-primary">retour à mon compte...</a></div>
                     </div>
                     <noUserMessage v-if="noUserMessage"></noUserMessage>
                 </div>

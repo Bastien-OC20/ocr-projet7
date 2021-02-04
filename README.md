@@ -1,4 +1,5 @@
-# ocr-projet7
+# OpenClassroom - Projet 7 :
+<img alt="groupomania" src="https://raw.githubusercontent.com/Bastien-OC20/ocr-projet7/main/front-end/src/assets/logo_orange.png">
 
 Créez un réseau social d’entreprise pour la société Groupomania
 
@@ -27,15 +28,17 @@ Voici les exigences émises par le comité de pilotage
 ### Installation
 
 - **Executez Git bash**
-- **git clone [https://bastien-oc20.github.io/ocr-projet6/](https://bastien-oc20.github.io/ocr-projet6/)**
+- **git clone [https://bastien-oc20.github.io/ocr-projet7/](https://bastien-oc20.github.io/ocr-projet7/)**
 
 ## Fabriqué avec
 
 - [Git](https://git-scm.com/download/win) - logiciel de versioning et de stockage
 - [Visual Studio Code](https://code.visualstudio.com/) - Editeur de textes
 - [NodeJS](https://nodejs.org/fr/) - Environnement d'exécution JavaScript
-- [Vue](https://vuejs.org/) - Framework JavaScript open-source
+- [Vue v3](https://vuejs.org/) - Framework JavaScript open-source
+- [Bootstrap v5](https://getbootstrap.com/) - Framework Css
 - [MySQL](https://www.mysql.com/fr/) - Base de donnée
+- [NPM](https://www.npmjs.com/) - Gestionnaire de paquets officiel de Node.js
 
 ### 1. Prérequis
 
@@ -46,13 +49,43 @@ Voici les exigences émises par le comité de pilotage
 
 ### 2. Installation
 
-## Boite à Outils
+- Clonez [hhttps://github.com/Bastien-OC20/ocr-projet7.git](https://github.com/Bastien-OC20/ocr-projet7.git) sur votre ordinateur.
 
-- [Visual Studio C++](https://docs.microsoft.com/fr-fr/cpp/build/vscpp-step-0-installation?view=vs-2019#:~:text=Open%20the%20program%20from%20the,Visual%20C%2B%2B%20components%20to%20install.) - Installer la prise en charge de C et C++ dans Visual Studio
-- [node.js tool pour visual studio](https://visualstudio.microsoft.com/fr/vs/features/node-js/) - Environnement de développement Node.js pour Visual Studio code
-- [node.js](https://blog.lesieur.name/installer-et-utiliser-nodejs-sous-windows/) - Environnement de développement Node.js pour windows
+#### Back-end
 
-## Legende des commit
+```
+- Exécuter npm init
+```
+
+```
+- Exécuter npm install nodemon
+```
+
+```
+- Exécuter nodemon server
+```
+
+#### Front-end
+
+```
+- Exécuter npm run serve
+```
+
+```
+- Exécuter run build
+```
+
+```
+- Exécuter npm run lint
+```
+
+- Rendez vous à l'adresse suivante : **[http://localhost:8080/](http://localhost:8080/)**
+
+#### Admin
+
+- Identifiant : administrateur@groupomania.fr
+- Mot de passe : Bonjour
+## Legende des commits
 
 - ⏳ : Initialisation
 - ✋ : Suppression

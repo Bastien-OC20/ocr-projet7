@@ -1,4 +1,5 @@
 # OpenClassroom - Projet 7 :
+
 <img alt="groupomania" src="https://raw.githubusercontent.com/Bastien-OC20/ocr-projet7/main/front-end/src/assets/logo_orange.png">
 
 Créez un réseau social d’entreprise pour la société Groupomania
@@ -85,6 +86,7 @@ Voici les exigences émises par le comité de pilotage
 
 - Identifiant : administrateur@groupomania.fr
 - Mot de passe : Bonjour
+
 ## Legende des commits
 
 - ⏳ : Initialisation

@@ -6,8 +6,8 @@
                     <div class="card bg-light">
                         <p class="h5 my-3 text-center" style="color:#091F43;">Bienvenu sur le réseau social interne</p>
                         <div class="card-header bg-light d-flex flex-column justify-content-center">
-                            <img src="../assets/logo_black.svg" class="m-0 p-0" height="60" alt="logo groupomania">
-                            <h5 class="h6 text-center" style="color:#091F43;">Veuillez-vous inscrire !</h5>
+                            <img src="../assets/logo_black.svg" class="m-0 p-0" height="50" alt="logo groupomania">
+                            <h5 class="h6 text-center">Veuillez-vous inscrire !</h5>
                         </div>
                         <div class="card-body col-md-8 col-lg-6 offset-md-2 offset-lg-3">
                             <form @submit.prevent="handleSubmit">

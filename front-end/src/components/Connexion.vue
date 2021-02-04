@@ -11,12 +11,12 @@
               class="card-header bg-light d-flex flex-column justify-content-center"
             >
               <img
-                src="../assets/logo_orange.png"
+                src="../assets/logo_black.svg"
                 class="m-0 p-0"
-                height="60"
+                height="50"
                 alt="logo groupomania"
               />
-              <h5 class="h6 text-center" style="color: #091f43">
+              <h5 class="h6 text-center">
                 Veuillez-vous identifier !
               </h5>
             </div>

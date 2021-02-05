@@ -19,7 +19,7 @@
             >
               <span class="text-dark h6">{{ userName }}</span>
             </div>
-            <div class="card-body" style="background-color: #d4d4d4">
+            <div class="card-body bg-dark" >
               <div
                 class="row border d-flex align-items-center m-2 p-0"
                 style="background-color: ghostwhite"

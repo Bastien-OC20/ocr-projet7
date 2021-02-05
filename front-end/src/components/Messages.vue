@@ -40,7 +40,7 @@
                     <div v-for="message in messages" :key="message.id" class="card bg-light my-3">
                         <div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
                             <div>
-                                <img :src="message.avatar" height="40" class="m-0 rounded-circle"/>
+                                <img :src="message.avatar" alt="image de profil" height="40" class="m-0 rounded-circle"/>
                                 <span class="small text-dark m-0 p-1" >
                                     Posté par {{message.userName}} 
                                     <span v-if="!message.isActive" class="small text-danger">(supprimé)</span>, 
@@ -54,7 +54,7 @@
                         </div>
                         <div class="card-body text-dark text-left">
                             <p class="small" v-if="message.message !== ''"> {{message.message}} </p>
-                            <img class="w-100" :src="message.messageUrl" v-if="message.messageUrl !== ''">
+                            <img class="w-100" :src="message.messageUrl" alt="image du message" v-if="message.messageUrl !== ''">
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
                             <a :href="'#/commentaires/' + message.id" class="h6 small">Voir les commentaires</a>
